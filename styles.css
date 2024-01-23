@@ -1,0 +1,34 @@
+/* Simple CSS Reset */
+html {
+    box-sizing: border-box;
+    font-size: 62.5%; /* This sets the font size to 10px, making 'rem' units easier to manage */
+}
+
+*, *::before, *::after {
+    box-sizing: inherit; /* Inherit box-sizing from html to ensure consistency across the website */
+    margin: 0; /* Remove default margins */
+    padding: 0; /* Remove default paddings */
+    border: 0; /* Remove default borders */
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    line-height: 1.6; /* Default line height */
+    color: #333; /* Default text color */
+}
+
+ul, ol {
+    list-style: none; /* Remove default list styles */
+}
+
+a {
+    text-decoration: none; /* Remove default text decoration for links */
+    color: inherit; /* Link color inherits from parent */
+}
+
+img {
+    max-width: 100%; /* Make images responsive */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* end staging and reset */
