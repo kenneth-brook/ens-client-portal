@@ -32,3 +32,41 @@ img {
 }
 
 /* end staging and reset */
+
+body {
+    background-color: #2469B3;
+}
+
+header {
+    width: 100%;
+    min-height: 75px;
+    height: auto;
+    background-color: #143D6A;
+}
+
+.headLogo {
+    background-color: #FFFFFF;
+    max-width: 15%;
+    left: 0;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 2;
+}
+
+.headLogo img {
+    padding: 20px 35px;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 3;
+}
+
+.logoDiamond {
+    height: 54px;
+    width: 54px;
+    background-color: #FFFFFF;
+    position: absolute;
+    right: -12px;
+    top: 20px;
+    z-index: 1;
+    transform: rotate(45deg);
+}
