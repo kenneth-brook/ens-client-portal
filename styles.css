@@ -46,7 +46,7 @@ header {
 
 .headLogo {
     background-color: #FFFFFF;
-    max-width: 15%;
+    width: 15%;
     left: 0;
     box-sizing: border-box;
     position: relative;
@@ -69,4 +69,68 @@ header {
     top: 20px;
     z-index: 1;
     transform: rotate(45deg);
+}
+
+.container {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+}
+
+.sideMenu {
+    width: 15%;
+    height: 70vh;
+    background-color: #2E79CA;
+    border-right: 3px solid #1C5B91; 
+    border-bottom: 3px solid #1C5B91;
+    position: absolute;
+    left: 0;
+    transition: left 0.9s ease;
+}
+
+.slideTab {
+    width: 40px;
+    height: 85px;
+    background-color: #2E79CA;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: -40px;
+    border-right: 3px solid #1C5B91; 
+    border-bottom: 3px solid #1C5B91;
+    border-top: 3px solid #1C5B91;
+    border-top-right-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+.circle {
+    position: absolute;
+    top: 50%; /* Vertical center */
+    right: -32px; /* Align with the tab */
+    width: 34px; /* Circle size */
+    height: 34px;
+    background-color: #D9D9D9; /* Example color */
+    border-radius: 50%;
+    transform: translateY(-50%);
+    transition: transform 0.9s ease; /* Smooth rotation effect */
+}
+
+.circle::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    border: 10px solid transparent;
+    border-right-color: black; /* Triangle color */
+    border-left: 0;
+    transform: translate(-50%, -50%);
+}
+
+.open .sideMenu {
+    left: -15% !important; /* Slide out */
+}
+
+/* Styling for when the circle is rotated */
+.rotated .circle {
+    transform: translateY(-50%) rotate(180deg); /* Rotate 180 degrees */
 }
