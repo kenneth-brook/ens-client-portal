@@ -192,3 +192,9 @@ header {
     color: #FFFFFF;
     text-align: center;
 }
+
+#contentBody {
+    min-width: 85%;
+    max-width: 100%;
+    position: relative;
+}
