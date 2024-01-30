@@ -18,6 +18,10 @@ function createFormButton(text) {
 // Function to generate the login form
 function generateLoginForm() {
     const form = document.createElement('form');
+    const header = document.createElement('p');
+    header.className = "formHeader";
+    header.innerText = "Please Login To Access Your Emerge-N-See Control Suite Portal";
+    form.appendChild(header);
     form.appendChild(createFormField('loginUsername', 'text', 'Username'));
     form.appendChild(createFormField('loginPassword', 'password', 'Password'));
     form.appendChild(createFormButton('Login'));

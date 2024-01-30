@@ -82,13 +82,21 @@ header {
 
 .sideMenu {
     width: 15%;
-    height: 70vh;
+    min-height: 70vh;
     background-color: #2E79CA;
     border-right: 3px solid #1C5B91; 
     border-bottom: 3px solid #1C5B91;
     position: absolute;
     left: 0;
+    z-index: 10;
     transition: left 0.9s ease;
+}
+
+.sideMenu li a {
+    font-size: 1.8rem;
+    color: #FFFFFF;
+    margin-left: 20px;
+    line-height: 3.5rem;
 }
 
 .slideTab {
@@ -194,7 +202,57 @@ header {
 }
 
 #contentBody {
-    min-width: 85%;
-    max-width: 100%;
+    width: 85%;
+    height: 100vh;
+    position: absolute;
+    right: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1;
+    transition: width 0.9s ease-in-out;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
     position: relative;
+    border-style: solid;
+    border-width: 4px;
+    border-color: #d3d3d3 #696969 #696969 #d3d3d3;
+    border-radius: 10px;
+    background-color: #143D6A;
+    padding: 20px;
+    box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+    font-size: 1.6rem;
+    text-align: center;
+    align-items: center;
+    width: 45%;
+}
+
+form input {
+    font-size: 1.6rem;
+    text-align: center;
+    padding: 10px 5px;
+    margin: 20px;
+    width: 50%;
+}
+
+form input:first-child {
+    margin-top: 80px;
+}
+
+form button {
+    font-size: 1.6rem;
+    text-align: center;
+    width: 28%;
+    padding: 15px 5px;
+    margin-bottom: 80px;
+    margin-top: 20px;
+}
+
+.formHeader {
+    color: #FFFFFF;
+    font-size: 2.2rem;
+    padding: 25px 0;
 }
