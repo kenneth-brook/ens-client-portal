@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Display Key and Email</title>
+<style>
+  .centered-content {
+    text-align: center;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    font-family: Arial, sans-serif;
+  }
+</style>
+</head>
+<body>
+
+<div class="centered-content">
+  <p id="key">Key: Loading...</p>
+  <p id="email">Email: Loading...</p>
+</div>
+
+<script>
+  // JavaScript to extract query parameters and display them
+  function getQueryParams() {
+    const params = new URLSearchParams(window.location.search);
+    const key = params.get('key');
+    const email = params.get('email');
+    
+    document.getElementById('key').textContent = `Key: ${key}`;
+    document.getElementById('email').textContent = `Email: ${email}`;
+  }
+
+  window.onload = getQueryParams;
+</script>
+
+</body>
+</html>
