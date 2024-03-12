@@ -18,8 +18,8 @@
 <body>
 
 <div class="centered-content">
-  <p id="key">Key: Loading...</p>
-  <p id="email">Email: Loading...</p>
+  <p id="keytemp">Key: Loading...</p>
+  <p id="emailtemp">Email: Loading...</p>
 </div>
 
 <script>
@@ -29,12 +29,48 @@
     const key = params.get('key');
     const email = params.get('email');
     
-    document.getElementById('key').textContent = `Key: ${key}`;
-    document.getElementById('email').textContent = `Email: ${email}`;
+    document.getElementById('keytemp').textContent = `Key: ${key}`;
+    document.getElementById('emailtemp').textContent = `Email: ${email}`;
+
+    document.getElementById('key').value = key || '';
+    document.getElementById('email').value = email || '';
   }
 
   window.onload = getQueryParams;
 </script>
+
+<form id="registrationForm">
+  <input type="hidden" id="key" name="key">
+  
+  <label for="email">Email:</label>
+  <input type="email" id="email" name="email" readonly>
+  
+  <label for="firstName">First Name:</label>
+  <input type="text" id="firstName" name="firstName" required>
+  
+  <label for="lastName">Last Name:</label>
+  <input type="text" id="lastName" name="lastName" required>
+  
+  <label for="phoneNumber">Phone Number:</label>
+  <input type="tel" id="phoneNumber" name="phoneNumber" required>
+  
+  <label for="department">Department:</label>
+  <input type="text" id="department" name="department" required>
+  
+  <label for="city">City:</label>
+  <input type="text" id="city" name="city" required>
+  
+  <label for="county">County:</label>
+  <input type="text" id="county" name="county" required>
+  
+  <label for="password">Password:</label>
+  <input type="password" id="password" name="password" required>
+  
+  <label for="repeatPassword">Repeat Password:</label>
+  <input type="password" id="repeatPassword" name="repeatPassword" required>
+  
+  <button type="submit">Register</button>
+</form>
 
 </body>
 </html>
