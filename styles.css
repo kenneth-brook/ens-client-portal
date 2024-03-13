@@ -213,7 +213,7 @@ header {
     transition: width 0.9s ease-in-out;
 }
 
-form {
+#loginForm {
     display: flex;
     flex-direction: column;
     position: relative;
@@ -230,7 +230,7 @@ form {
     width: 45%;
 }
 
-form input {
+#loginForm input {
     font-size: 1.6rem;
     text-align: center;
     padding: 10px 5px;
@@ -238,11 +238,11 @@ form input {
     width: 50%;
 }
 
-form input:first-child {
+#loginForm input:first-child {
     margin-top: 80px;
 }
 
-form button {
+#loginForm button {
     font-size: 1.6rem;
     text-align: center;
     width: 28%;

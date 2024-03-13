@@ -11,7 +11,7 @@
     }
 
     .form-container {
-        max-width: 400px;
+        max-width: 500px;
         margin: 20px auto;
         padding: 20px;
         border: 1px solid #ccc;
@@ -21,10 +21,13 @@
     .input-group {
         position: relative;
         margin-bottom: 15px;
+        display: flex;
+        flex-direction: column;
+        font-size: 1.8rem;
+        color: white;
     }
 
-    input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
-        width: calc(100% - 40px);
+    #registrationForm input {
         padding: 10px;
         margin-bottom: 10px;
         border-radius: 5px;
@@ -35,7 +38,7 @@
         position: absolute; /* Adjust as needed */
         right: 10px; /* Adjust as needed */
         top: 0;
-        color: green;
+        color: rgb(0, 255, 0);
         cursor: pointer;
     }
 
@@ -62,13 +65,13 @@
     }
 
     .requirements {
-        font-size: 0.8em;
-        color: #666;
+        font-size: 1.6rem;
+        color: #FFF;
         margin-bottom: 10px;
     }
     
     .valid {
-        color: green;
+        color: rgb(0, 255, 0);
     }
     
     .invalid {
@@ -102,8 +105,21 @@ button#submitButton.active {
     }
 }
 </style>
+<link rel="stylesheet" href="../styles.css">
+<link rel="icon" type="image/png" href="../img/ensportalico.png">
 </head>
 <body>
+    <header>
+        <div class="headLogo">
+            <div>
+                <img src="../img/enslogo.png" />
+                <div class="logoDiamond"></div>
+            </div>
+        </div>
+        <div>
+            <h4 id="pageTitle">PLEASE COMPLETE YOUR REGISTRATION</h4>
+        </div>
+    </header>
 
 <div class="form-container">
     <form id="registrationForm">
@@ -120,38 +136,36 @@ button#submitButton.active {
         </div>
             
         <div class="input-group">
-            <label class="input-group">
-                Last Name:<span class="required"></span>
+            <label for="lastName">Last Name:<span class="required"></span></label>
                 <input type="text" id="lastName" name="lastName">
-            </label>
+            
         </div>
         
         <div class="input-group">
-            <label class="input-group">
-                Phone Number:<span class="required"></span>
+            <label for="phoneNumber">Phone Number:<span class="required"></span></label>
                 <input type="tel" id="phoneNumber" name="phoneNumber" required>
-            </label>
+            
         </div>
 
         <div class="input-group">
-            <label class="input-group">
+            <label for="department"></label>
                 Department:
                 <input type="text" id="department" name="department">
-            </label>
+            
         </div>
         
         <div class="input-group">
-            <label class="input-group">
-                City:
+            <label for="city">
+                City:</label>
                 <input type="text" id="city" name="city">
-            </label>
+            
         </div>
             
         <div class="input-group">
-            <label class="input-group">
-                County:
+            <label for="county">
+                County:</label>
                 <input type="text" id="county" name="county">
-            </label>
+            
         </div>
         
         <div class="input-group">
@@ -246,7 +260,7 @@ function toggleVisibility(passwordFieldId) {
     } else {
         passwordInput.type = "password";
         icon.classList.replace('fa-eye-slash', 'fa-eye');
-        icon.style.color = "green"; // Change to red when hidden
+        icon.style.color = "rgb(0, 255, 0)"; // Change to red when hidden
     }
 }
 
@@ -258,7 +272,7 @@ function autoHide(passwordFieldId) {
         if (passwordInput.type === "text") {
             passwordInput.type = "password";
             icon.classList.replace('fa-eye-slash', 'fa-eye');
-            icon.style.color = "green"; // Ensure the icon turns red when auto-hiding
+            icon.style.color = "rgb(0, 255, 0)"; // Ensure the icon turns red when auto-hiding
         }
     }, 2500); // Adjust time as needed
 }
