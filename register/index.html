@@ -32,9 +32,10 @@
     }
 
     .input-group i {
-        position: absolute;
-        top: 10px;
-        right: 10px;
+        position: absolute; /* Adjust as needed */
+        right: 10px; /* Adjust as needed */
+        top: 0;
+        color: green;
         cursor: pointer;
     }
 
@@ -73,6 +74,33 @@
     .invalid {
         color: red;
     }
+
+    button#submitButton {
+    padding: 10px;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    background-color: #ccc; /* Subdued look */
+    color: #666;
+    cursor: not-allowed;
+    transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
+}
+
+button#submitButton.active {
+    background-color: #007bff; /* Active look */
+    color: white;
+    cursor: pointer;
+    animation: glow 1.5s infinite alternate;
+}
+
+@keyframes glow {
+    from {
+        box-shadow: 0 0 5px #007bff;
+    }
+    to {
+        box-shadow: 0 0 20px #007bff;
+    }
+}
 </style>
 </head>
 <body>
@@ -127,15 +155,13 @@
         </div>
         
         <div class="input-group">
-            <label for="password">Password:<span class="required"></span></label>
+            <label for="password">Password:<span class="required"></span><i class="fas fa-eye eye-icon" onclick="toggleVisibility('password')" onmouseout="autoHide('password')"></i></label>
             <input type="password" id="password" name="password" required>
-            <i class="fas fa-eye" onclick="togglePasswordVisibility('password')"></i>
         </div>
         
         <div class="input-group">
-            <label for="repeatPassword">Repeat Password:<span class="required"></span></label>
+            <label for="repeatPassword">Repeat Password:<span class="required"></span><i class="fas fa-eye eye-icon" onclick="toggleVisibility('repeatPassword')" onmouseout="autoHide('repeatPassword')"></i></label>
             <input type="password" id="repeatPassword" name="repeatPassword" required>
-            <i class="fas fa-eye" onclick="togglePasswordVisibility('repeatPassword')"></i>
         </div>
 
         <div class="requirements">
@@ -143,10 +169,11 @@
             <span id="minChars" class="invalid">At least 10 characters</span><br>
             <span id="upperCase" class="invalid">At least one uppercase letter</span><br>
             <span id="specialChar" class="invalid">At least one special character</span><br>
-            <span id="number" class="invalid">At least one number</span>
+            <span id="number" class="invalid">At least one number</span><br>
+            <span id="pwMatch" class="invalid">Both passwords must match</span>
         </div>
 
-        <button type="submit">Register</button>
+        <button type="submit" id="submitButton" disabled>Register</button>
     </form>
 </div>
 
@@ -155,55 +182,85 @@ document.addEventListener('DOMContentLoaded', function() {
     const urlParams = new URLSearchParams(window.location.search);
     document.getElementById('email').value = urlParams.get('email') || '';
     document.getElementById('key').value = urlParams.get('key') || '';
-
-    document.querySelectorAll('.input-group i').forEach(item => {
-        item.addEventListener('click', function() {
-            let input = this.previousElementSibling;
-            input.type = input.type === "password" ? "text" : "password";
-            this.classList.toggle('fa-eye-slash');
-        });
-        item.addEventListener('mouseout', function() {
-            let input = this.previousElementSibling;
-            if (input.type === "text") {
-                input.type = "password";
-                this.classList.remove('fa-eye-slash');
-            }
-        });
+    document.getElementById('password').oninput = validatePassword;
+    document.getElementById('repeatPassword').oninput = validateRepeatPassword;
+    document.querySelectorAll('input').forEach(input => {
+        input.oninput = validateForm;
     });
 });
 
-window.onload = function() {
-    // Set URLSearchParams example values (to be replaced with actual URL parameters handling)
-    document.getElementById('email').value = 'example@example.com'; // Placeholder for URL parameter
-
-    const password = document.getElementById('password');
-    const repeatPassword = document.getElementById('repeatPassword');
-    password.oninput = validatePassword;
-    repeatPassword.oninput = validateRepeatPassword;
-};
-
 function validatePassword() {
     const password = document.getElementById('password').value;
-    const minChars = document.getElementById('minChars');
-    const upperCase = document.getElementById('upperCase');
-    const specialChar = document.getElementById('specialChar');
-    const number = document.getElementById('number');
+    let valid = true;
 
-    minChars.className = password.length >= 10 ? 'valid' : 'invalid';
-    upperCase.className = /[A-Z]/.test(password) ? 'valid' : 'invalid';
-    specialChar.className = /[^a-zA-Z0-9]/.test(password) ? 'valid' : 'invalid';
-    number.className = /[0-9]/.test(password) ? 'valid' : 'invalid';
+    document.getElementById('minChars').className = password.length >= 10 ? 'valid' : 'invalid';
+    document.getElementById('upperCase').className = /[A-Z]/.test(password) ? 'valid' : 'invalid';
+    document.getElementById('specialChar').className = /[^a-zA-Z0-9]/.test(password) ? 'valid' : 'invalid';
+    document.getElementById('number').className = /[0-9]/.test(password) ? 'valid' : 'invalid';
+
+    valid &= password.length >= 10;
+    valid &= /[A-Z]/.test(password);
+    valid &= /[^a-zA-Z0-9]/.test(password);
+    valid &= /[0-9]/.test(password);
+
+    return valid;
 }
 
 function validateRepeatPassword() {
-    // Additional functionality to verify repeat password can be added here
+    const password = document.getElementById('password').value;
+    const repeatPassword = document.getElementById('repeatPassword').value;
+    const match = password === repeatPassword;
+
+    document.getElementById('pwMatch').className = match ? 'valid' : 'invalid';
+    
+    return match;
 }
 
-function togglePasswordVisibility(id) {
-    let passwordInput = document.getElementById(id);
-    let eyeIcon = passwordInput.nextElementSibling;
-    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
-    eyeIcon.classList.toggle('fa-eye-slash');
+function validateForm() {
+    const validPassword = validatePassword();
+    const passwordsMatch = validateRepeatPassword();
+    const otherRequiredFieldsFilled = Array.from(document.querySelectorAll('input[required]')).every(input => input.value.trim() !== '');
+
+    const submitButton = document.getElementById('submitButton');
+    if (validPassword && passwordsMatch && otherRequiredFieldsFilled) {
+        submitButton.disabled = false;
+        submitButton.classList.add('active');
+    } else {
+        submitButton.disabled = true;
+        submitButton.classList.remove('active');
+    }
+
+    //document.getElementById('submitButton').disabled = !(validPassword && passwordsMatch && otherRequiredFieldsFilled);
+}
+
+let allowAutoHide = true;
+
+function toggleVisibility(passwordFieldId) {
+    const passwordInput = document.getElementById(passwordFieldId);
+    const icon = document.querySelector(`label[for=${passwordFieldId}] i`);
+    
+    if (passwordInput.type === "password") {
+        passwordInput.type = "text";
+        icon.classList.replace('fa-eye', 'fa-eye-slash');
+        icon.style.color = "red"; // Change to green when visible
+    } else {
+        passwordInput.type = "password";
+        icon.classList.replace('fa-eye-slash', 'fa-eye');
+        icon.style.color = "green"; // Change to red when hidden
+    }
+}
+
+function autoHide(passwordFieldId) {
+    const passwordInput = document.getElementById(passwordFieldId);
+    const icon = document.querySelector(`label[for=${passwordFieldId}] i`);
+    // Delay the auto-hide to allow users to move the cursor away without immediate toggling
+    setTimeout(() => {
+        if (passwordInput.type === "text") {
+            passwordInput.type = "password";
+            icon.classList.replace('fa-eye-slash', 'fa-eye');
+            icon.style.color = "green"; // Ensure the icon turns red when auto-hiding
+        }
+    }, 2500); // Adjust time as needed
 }
 </script>
 
