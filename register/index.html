@@ -1,59 +1,211 @@
 <!DOCTYPE html>
-
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Display Key and Email</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Registration Form</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    .form-container {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
+
+    .input-group {
+        position: relative;
+        margin-bottom: 15px;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="password"] {
+        width: calc(100% - 40px);
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+    }
+
+    .input-group i {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        cursor: pointer;
+    }
+
+    .required:after {
+        content: '*';
+        color: red;
+        margin-left: 2px;
+        position: relative;
+        top: -0.5em;
+    }
+    
+    button[type="submit"] {
+        width: 100%;
+        padding: 10px;
+        border: none;
+        border-radius: 5px;
+        background-color: #007bff;
+        color: white;
+        cursor: pointer;
+    }
+
+    button[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .requirements {
+        font-size: 0.8em;
+        color: #666;
+        margin-bottom: 10px;
+    }
+    
+    .valid {
+        color: green;
+    }
+    
+    .invalid {
+        color: red;
+    }
+</style>
 </head>
 <body>
 
+<div class="form-container">
+    <form id="registrationForm">
+        <input type="hidden" id="key" name="key">
+
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" readonly>
+        </div>
+        
+        <div class="input-group">
+            <label for="firstName">First Name:<span class="required"></span></label>
+            <input type="text" id="firstName" name="firstName" required>
+        </div>
+            
+        <div class="input-group">
+            <label class="input-group">
+                Last Name:<span class="required"></span>
+                <input type="text" id="lastName" name="lastName">
+            </label>
+        </div>
+        
+        <div class="input-group">
+            <label class="input-group">
+                Phone Number:<span class="required"></span>
+                <input type="tel" id="phoneNumber" name="phoneNumber" required>
+            </label>
+        </div>
+
+        <div class="input-group">
+            <label class="input-group">
+                Department:
+                <input type="text" id="department" name="department">
+            </label>
+        </div>
+        
+        <div class="input-group">
+            <label class="input-group">
+                City:
+                <input type="text" id="city" name="city">
+            </label>
+        </div>
+            
+        <div class="input-group">
+            <label class="input-group">
+                County:
+                <input type="text" id="county" name="county">
+            </label>
+        </div>
+        
+        <div class="input-group">
+            <label for="password">Password:<span class="required"></span></label>
+            <input type="password" id="password" name="password" required>
+            <i class="fas fa-eye" onclick="togglePasswordVisibility('password')"></i>
+        </div>
+        
+        <div class="input-group">
+            <label for="repeatPassword">Repeat Password:<span class="required"></span></label>
+            <input type="password" id="repeatPassword" name="repeatPassword" required>
+            <i class="fas fa-eye" onclick="togglePasswordVisibility('repeatPassword')"></i>
+        </div>
+
+        <div class="requirements">
+            Password must contain:<br>
+            <span id="minChars" class="invalid">At least 10 characters</span><br>
+            <span id="upperCase" class="invalid">At least one uppercase letter</span><br>
+            <span id="specialChar" class="invalid">At least one special character</span><br>
+            <span id="number" class="invalid">At least one number</span>
+        </div>
+
+        <button type="submit">Register</button>
+    </form>
+</div>
+
 <script>
-  function getQueryParams() {
-    const params = new URLSearchParams(window.location.search);
-    const key = params.get('key');
-    const email = params.get('email');
+document.addEventListener('DOMContentLoaded', function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    document.getElementById('email').value = urlParams.get('email') || '';
+    document.getElementById('key').value = urlParams.get('key') || '';
 
-    document.getElementById('key').value = key || '';
-    document.getElementById('email').value = email || '';
-  }
+    document.querySelectorAll('.input-group i').forEach(item => {
+        item.addEventListener('click', function() {
+            let input = this.previousElementSibling;
+            input.type = input.type === "password" ? "text" : "password";
+            this.classList.toggle('fa-eye-slash');
+        });
+        item.addEventListener('mouseout', function() {
+            let input = this.previousElementSibling;
+            if (input.type === "text") {
+                input.type = "password";
+                this.classList.remove('fa-eye-slash');
+            }
+        });
+    });
+});
 
-  window.onload = getQueryParams;
+window.onload = function() {
+    // Set URLSearchParams example values (to be replaced with actual URL parameters handling)
+    document.getElementById('email').value = 'example@example.com'; // Placeholder for URL parameter
+
+    const password = document.getElementById('password');
+    const repeatPassword = document.getElementById('repeatPassword');
+    password.oninput = validatePassword;
+    repeatPassword.oninput = validateRepeatPassword;
+};
+
+function validatePassword() {
+    const password = document.getElementById('password').value;
+    const minChars = document.getElementById('minChars');
+    const upperCase = document.getElementById('upperCase');
+    const specialChar = document.getElementById('specialChar');
+    const number = document.getElementById('number');
+
+    minChars.className = password.length >= 10 ? 'valid' : 'invalid';
+    upperCase.className = /[A-Z]/.test(password) ? 'valid' : 'invalid';
+    specialChar.className = /[^a-zA-Z0-9]/.test(password) ? 'valid' : 'invalid';
+    number.className = /[0-9]/.test(password) ? 'valid' : 'invalid';
+}
+
+function validateRepeatPassword() {
+    // Additional functionality to verify repeat password can be added here
+}
+
+function togglePasswordVisibility(id) {
+    let passwordInput = document.getElementById(id);
+    let eyeIcon = passwordInput.nextElementSibling;
+    passwordInput.type = passwordInput.type === 'password' ? 'text' : 'password';
+    eyeIcon.classList.toggle('fa-eye-slash');
+}
 </script>
-
-<form id="registrationForm">
-  <input type="hidden" id="key" name="key">
-  
-  <label for="email">Email:</label>
-  <input type="email" id="email" name="email" readonly>
-  
-  <label for="firstName">First Name:</label>
-  <input type="text" id="firstName" name="firstName" required>
-  
-  <label for="lastName">Last Name:</label>
-  <input type="text" id="lastName" name="lastName" required>
-  
-  <label for="phoneNumber">Phone Number:</label>
-  <input type="tel" id="phoneNumber" name="phoneNumber" required>
-  
-  <label for="department">Department:</label>
-  <input type="text" id="department" name="department" required>
-  
-  <label for="city">City:</label>
-  <input type="text" id="city" name="city" required>
-  
-  <label for="county">County:</label>
-  <input type="text" id="county" name="county" required>
-  
-  <label for="password">Password:</label>
-  <input type="password" id="password" name="password" required>
-  
-  <label for="repeatPassword">Repeat Password:</label>
-  <input type="password" id="repeatPassword" name="repeatPassword" required>
-  
-  <button type="submit">Register</button>
-</form>
 
 </body>
 </html>
