@@ -243,8 +243,6 @@ function validateForm() {
         submitButton.disabled = true;
         submitButton.classList.remove('active');
     }
-
-    //document.getElementById('submitButton').disabled = !(validPassword && passwordsMatch && otherRequiredFieldsFilled);
 }
 
 let allowAutoHide = true;
@@ -267,15 +265,48 @@ function toggleVisibility(passwordFieldId) {
 function autoHide(passwordFieldId) {
     const passwordInput = document.getElementById(passwordFieldId);
     const icon = document.querySelector(`label[for=${passwordFieldId}] i`);
-    // Delay the auto-hide to allow users to move the cursor away without immediate toggling
     setTimeout(() => {
         if (passwordInput.type === "text") {
             passwordInput.type = "password";
             icon.classList.replace('fa-eye-slash', 'fa-eye');
-            icon.style.color = "rgb(0, 255, 0)"; // Ensure the icon turns red when auto-hiding
+            icon.style.color = "rgb(0, 255, 0)";
         }
-    }, 2500); // Adjust time as needed
+    }, 2500);
 }
+
+document.getElementById('registrationForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = {
+        email: document.getElementById('email').value,
+        key: document.getElementById('key').value,
+        firstName: document.getElementById('firstName').value,
+        lastName: document.getElementById('lastName').value,
+        phoneNumber: document.getElementById('phoneNumber').value,
+        department: document.getElementById('department').value,
+        city: document.getElementById('city').value,
+        county: document.getElementById('county').value,
+        password: document.getElementById('password').value,
+    };
+
+    // Submit form data using Fetch API
+    fetch('https://client-control.911-ens-services.com/update-client', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log('Success:', data);
+        // Handle success, such as displaying a success message or redirecting the user
+    })
+    .catch((error) => {
+        console.error('Error:', error);
+        // Handle errors, such as displaying an error message to the user
+    });
+});
 </script>
 
 </body>
