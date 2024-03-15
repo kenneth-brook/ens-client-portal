@@ -310,12 +310,20 @@ document.getElementById('registrationForm').addEventListener('submit', function(
 });
 
 function displaySuccessAndRedirect() {
+    // Scroll to the top of the page
+    window.scrollTo({top: 0, behavior: 'smooth'});
+    
     // Create or select an element to display the success message
     let messageElement = document.createElement("div");
     messageElement.setAttribute("id", "successMessage");
-    messageElement.innerHTML = "Success, You will now be directed to portal login.<br>Redirecting in <span id='countdown'>5</span> seconds...";
-    document.body.insertBefore(messageElement, document.body.firstChild);
+    // Adjust the CSS text to remove positioning and ensure natural document flow
+    messageElement.style.cssText = "text-align: center; font-size: 1.8rem; color: white; margin-top: 40px;";
+    messageElement.innerHTML = "Success, You will now be directed to portal login.<br>Redirecting in <span id='countdown' style='color: red;'>5</span> seconds...";
     
+    // Insert the messageElement just before the form container to ensure it pushes content down
+    let formContainer = document.querySelector(".form-container");
+    formContainer.parentNode.insertBefore(messageElement, formContainer);
+
     // Start the countdown
     let countdown = 5;
     let countdownElement = document.getElementById('countdown');

@@ -39,7 +39,7 @@ function generateLoginForm() {
 
 // Function for logging in a user
 function loginUser(username, password) {
-    fetch('https://caosr3fgr9.execute-api.us-east-2.amazonaws.com/default/client-portal/login', {
+    fetch('https://client-control.911-ens-services.com/client-portal/login', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
