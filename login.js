@@ -23,38 +23,51 @@ function generateLoginForm() {
     header.className = "formHeader";
     header.innerText = "Please Login To Access Your Emerge-N-See Control Suite Portal";
     form.appendChild(header);
-    form.appendChild(createFormField('loginUsername', 'text', 'Username'));
-    form.appendChild(createFormField('loginPassword', 'password', 'Password'));
+    form.appendChild(createFormField('email', 'email', 'Username'));
+    form.appendChild(createFormField('password', 'password', 'Password'));
     form.appendChild(createFormButton('Login'));
 
-    form.addEventListener('submit', function(event) {
-        event.preventDefault();
-        const username = document.getElementById('loginUsername').value;
-        const password = document.getElementById('loginPassword').value;
-        loginUser(username, password);
-    });
-
     document.getElementById('contentBody').appendChild(form);
-}
-
-// Function for logging in a user
-function loginUser(username, password) {
-    fetch('https://client-control.911-ens-services.com/client-portal/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ username, password }),
-    })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        // Handle login success (e.g., storing the received JWT, redirecting the user)
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-    });
+    const errorBox = document.createElement('div');
+    errorBox.id = "errorBox";
+    errorBox.style.width = "100%";
+    errorBox.style.textAlign = "center";
+    errorBox.style.color = "red";
+    form.appendChild(errorBox)
+    form.addEventListener('submit', handleLoginSubmit);
 }
 
 // Generate the login form when the page loads
 generateLoginForm();
+
+function handleLoginSubmit(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    const email = document.getElementById('email').value;
+    const password = document.getElementById('password').value;
+
+    const loginData = {
+        email: email,
+        password: password,
+    };
+
+    fetch('https://client-control.911-ens-services.com/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(loginData),
+    })
+    .then(response => response.json())
+    .then(data => {
+        if(data.token) {
+            // Store the token and possibly redirect the user
+            localStorage.setItem('jwtToken', data.token);
+        } else {
+            // Handle login failure
+            const onError = document.getElementById('errorBox');
+            onError.innerText = "Incorrect Email or Password";
+        }
+    })
+    .catch(error => console.error('Error during login:', error));
+}
