@@ -63,6 +63,7 @@ function handleLoginSubmit(event) {
         if(data.token) {
             // Store the token and possibly redirect the user
             localStorage.setItem('jwtToken', data.token);
+            console.log(data.user);
         } else {
             // Handle login failure
             const onError = document.getElementById('errorBox');
