@@ -64,6 +64,12 @@ function handleLoginSubmit(event) {
             // Store the token and possibly redirect the user
             localStorage.setItem('jwtToken', data.token);
             console.log(data.user);
+            userData = data.user;
+            import('./stage.js').then(module => {
+                module.initializeStage();
+            }).catch(error => {
+                console.error("Failed to load stage.js", error);
+            });
         } else {
             // Handle login failure
             const onError = document.getElementById('errorBox');
