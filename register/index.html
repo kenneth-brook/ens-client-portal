@@ -300,13 +300,34 @@ document.getElementById('registrationForm').addEventListener('submit', function(
     .then(response => response.json())
     .then(data => {
         console.log('Success:', data);
-        // Handle success, such as displaying a success message or redirecting the user
+        document.getElementById('registrationForm').reset();
+        displaySuccessAndRedirect();
     })
     .catch((error) => {
         console.error('Error:', error);
         // Handle errors, such as displaying an error message to the user
     });
 });
+
+function displaySuccessAndRedirect() {
+    // Create or select an element to display the success message
+    let messageElement = document.createElement("div");
+    messageElement.setAttribute("id", "successMessage");
+    messageElement.innerHTML = "Success, You will now be directed to portal login.<br>Redirecting in <span id='countdown'>5</span> seconds...";
+    document.body.insertBefore(messageElement, document.body.firstChild);
+    
+    // Start the countdown
+    let countdown = 5;
+    let countdownElement = document.getElementById('countdown');
+    let intervalId = setInterval(() => {
+        countdown -= 1;
+        countdownElement.innerText = countdown;
+        if (countdown <= 0) {
+            clearInterval(intervalId);
+            window.location.href = "https://portal.911emergensee.com";
+        }
+    }, 1000);
+}
 </script>
 
 </body>
