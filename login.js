@@ -18,7 +18,7 @@ function createFormButton(text) {
 // Function to generate the login form
 function generateLoginForm() {
     const form = document.createElement('form');
-    form.id = ' ';
+    form.id = 'loginForm';
     const header = document.createElement('p');
     header.className = "formHeader";
     header.innerText = "Please Login To Access Your Emerge-N-See Control Suite Portal";
@@ -38,7 +38,7 @@ function generateLoginForm() {
 }
 
 // Generate the login form when the page loads
-generateLoginForm();
+checkJwtAndHandleAuth();
 
 function handleLoginSubmit(event) {
     event.preventDefault(); // Prevent the default form submission
@@ -63,13 +63,11 @@ function handleLoginSubmit(event) {
         if(data.token) {
             // Store the token and possibly redirect the user
             localStorage.setItem('jwtToken', data.token);
-            console.log(data.user);
-            userData = data.user;
-            import('./stage.js').then(module => {
-                module.initializeStage();
-            }).catch(error => {
-                console.error("Failed to load stage.js", error);
-            });
+            const uDat = JSON.stringify(data.user)
+            localStorage.setItem('user', uDat);
+            returnData = localStorage.getItem('user');
+            userData = JSON.parse(returnData);
+            import('./stage.js');
         } else {
             // Handle login failure
             const onError = document.getElementById('errorBox');
