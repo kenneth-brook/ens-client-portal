@@ -45,15 +45,14 @@ function checkJwtAndHandleAuth() {
     } else if (!isJwtValid(token)) {
         console.log("Session expired or user not logged in. Prompting for login...");
         removeJwt();
-        promptForLogin(); // This should be a function that handles showing the login UI
+        promptForLogin();
     } else {
         console.log("JWT is valid.");
-        checkStageJsImported(); // Ensure this logic matches your app's structure
+        checkStageJsImported();
     }
 }
 
 function isJwtValid(token) {
-    // Decode the JWT to check the expiry
     const base64Url = token.split('.')[1];
     const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
     const payload = JSON.parse(window.atob(base64));
@@ -64,17 +63,11 @@ function isJwtValid(token) {
 }
 
 function promptForLogin() {
-    // Implement the UI logic to show a login prompt/modal
-    // This could be a simple modal that appears over the content
-    // Or, for simplicity, an alert and a manual page refresh
     alert("Your session has expired. Please log in again.");
     generateLoginForm();
-    // Optionally, trigger a modal here instead of refreshing
-    //location.reload(); // Use if a modal or in-app login prompt isn't feasible
 }
 
 function checkStageJsImported() {
-    // Check if `stage.js` functionality is ready to be used
     if (window.stageJsImported) {
         console.log("`stage.js` is imported and ready.");
     } else {
@@ -87,5 +80,4 @@ function removeJwt() {
     localStorage.removeItem('jwtToken');
     localStorage.removeItem('user');
 }
-// Example call to check JWT and handle authentication at the start or on specific actions
 //removeJwt();
