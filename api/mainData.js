@@ -1,3 +1,3 @@
 function dataLoad() {
-    console.log('Data Loaded Function Launched')
+  console.log('Data Loaded Function Launched')
 }
