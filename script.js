@@ -32,7 +32,6 @@ function toggleMenuBox() {
 function removeElementById(elementId) {
   const element = document.getElementById(elementId)
   if (element) {
-    // Ensure the element exists before attempting to remove it
     element.remove()
   } else {
     console.log(`Element with ID '${elementId}' not found.`)
