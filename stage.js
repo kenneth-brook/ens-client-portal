@@ -19,14 +19,18 @@ console.log(userData.role)
 
 async function initStage() {
   await loadRoleBasedFeatures(userData)
-  await fetchClientData()
-  await fetchMainData()
+  try {
+    const clientData = await fetchClientData()
+    const mainData = await fetchMainData()
 
-  // Subscribe to state changes if necessary
-  const unsubscribe = globalState.subscribe((newState) => {
-    console.log('State updated:', newState)
-    // Update your UI based on the new state
-  })
+    // Use setState to update the global state
+    globalState.setState({ clientData, mainData })
+
+    // Example: log the updated state
+    console.log('Updated state:', globalState.getState())
+  } catch (error) {
+    console.error('Failed to initialize stage:', error)
+  }
 }
 
 window.stageJsImported = true

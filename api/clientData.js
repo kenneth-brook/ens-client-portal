@@ -1,6 +1,7 @@
 import { globalState } from '../reactive/state.js'
 
 export async function fetchClientData() {
+  console.log('clientData Launched')
   try {
     const response = await fetch(
       `https://client-control.911-ens-services.com/boot-strap-client/${userData.key}`,

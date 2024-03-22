@@ -17,11 +17,11 @@ async function loadRoleBasedFeatures(userData) {
   }
 
   // Assuming each module exports an init function named `init<Role>Features`
-  if (roleModule && roleModule.initFeatures) {
+  /* if (roleModule && roleModule.initFeatures) {
     roleModule.initFeatures()
   } else {
     console.error('Initialization function missing for role:', userData.role)
-  }
+  } */
 }
 
 export { loadRoleBasedFeatures }
