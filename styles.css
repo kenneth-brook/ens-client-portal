@@ -195,6 +195,7 @@ header {
     flex-direction: column;
     font-size: 1.8rem;
     color: #FFFFFF;
+    z-index: 99;
 }
 
 #menu-box p {

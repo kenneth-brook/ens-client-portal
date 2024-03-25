@@ -11,6 +11,7 @@ function createNavLink(href, text) {
   link.href = `#${href}` // Using hash for client-side routing
   link.textContent = text
   link.addEventListener('click', (e) => {
+    console.log('link clicked')
     e.preventDefault()
     window.location.hash = href
   })
