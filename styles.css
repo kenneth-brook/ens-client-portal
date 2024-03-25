@@ -191,7 +191,10 @@ header {
     background-color: #2E79CA;
     overflow: hidden;
     transition: max-height 0.9s ease;
-    
+    display: flex;
+    flex-direction: column;
+    font-size: 1.8rem;
+    color: #FFFFFF;
 }
 
 #menu-box p {
@@ -255,4 +258,8 @@ header {
     color: #FFFFFF;
     font-size: 2.2rem;
     padding: 25px 0;
+}
+
+.dropLink {
+    padding: 10px;
 }

@@ -1,6 +1,8 @@
 const sideMenu = document.getElementById('sideMenu')
 const contentBody = document.getElementById('contentBody')
 
+console.log('script')
+
 function toggleDiv() {
   const container = document.querySelector('.container')
   container.classList.toggle('open')
@@ -73,6 +75,13 @@ function checkStageJsImported() {
   } else {
     console.log('`stage.js` has not been imported. Loading now...')
     import('./stage.js')
+      .then(() => {
+        console.log('`stage.js` imported successfully.')
+        window.stageJsImported = true
+      })
+      .catch((error) => {
+        console.error('Error importing `stage.js`:', error)
+      })
   }
 }
 

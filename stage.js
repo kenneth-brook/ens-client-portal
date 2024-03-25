@@ -1,9 +1,16 @@
+window.stageJsImported = true
+console.log('stage')
+
 import { loadRoleBasedFeatures } from './reactive/load.js'
 import { globalState } from './reactive/state.js'
 import { fetchClientData } from './api/clientData.js'
 import { fetchMainData } from './api/mainData.js'
+import { generateNavigation } from './pages/components/nav.js'
+import './pages/components/routs.js'
 
 removeElementById('loginForm')
+
+const permissionLevel = userData.role
 
 const setStage = document.getElementById('contentBody')
 
@@ -14,8 +21,6 @@ testBox.style.fontSize = '2.5rem'
 testBox.style.color = 'white'
 setStage.appendChild(testBox)
 testBox.innerText = `Welcome ${userData.fname}`
-
-console.log(userData.role)
 
 async function initStage() {
   await loadRoleBasedFeatures(userData)
@@ -33,6 +38,5 @@ async function initStage() {
   }
 }
 
-window.stageJsImported = true
-
 initStage()
+generateNavigation(permissionLevel)
