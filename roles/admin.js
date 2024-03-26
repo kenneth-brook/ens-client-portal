@@ -5,4 +5,3 @@ rollBox.style.textAlign = 'center'
 rollBox.style.fontSize = '2.5rem'
 rollBox.style.color = 'white'
 setStage.appendChild(rollBox)
-rollBox.innerText = `Your Role Is: ${userData.role}`

@@ -15,15 +15,15 @@ function handleRouteChange() {
 
   switch (path) {
     case 'home':
-      loadModule('../../home') // Assuming loadModule is your function to dynamically import page modules
+      loadModule('home') // Assuming loadModule is your function to dynamically import page modules
       pageTitle = 'Home'
       break
     case 'page1':
-      loadModule('../../page1')
+      loadModule('page1')
       pageTitle = 'Page 1'
       break
     case 'page2':
-      loadModule('../../page2')
+      loadModule('page2')
       pageTitle = 'Page 2'
       break
     default:
@@ -48,7 +48,4 @@ async function loadModule(modulePath) {
   }
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOMContentLoaded event fired.')
-  handleRouteChange() // Ensure the DOM is ready before the initial route handling
-})
+handleRouteChange() // Ensure the DOM is ready before the initial route handling

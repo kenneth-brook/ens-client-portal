@@ -2,8 +2,7 @@ window.stageJsImported = true
 
 import { loadRoleBasedFeatures } from './reactive/load.js'
 import { globalState } from './reactive/state.js'
-import { generateNavigation } from './pages/components/nav.js'
-import './pages/components/routs.js'
+import { generateNavigation } from './nav.js'
 import { fetchClientData } from './api/clientData.js'
 import { fetchMainData } from './api/mainData.js'
 
@@ -35,6 +34,7 @@ async function initStage() {
 
 async function loadHomePage() {
   try {
+    clearAndSetInitialContent()
     // Dynamically import the home module
     const homeModule = await import('./pages/home.js')
     if (homeModule && homeModule.loadPage) {
@@ -43,18 +43,19 @@ async function loadHomePage() {
   } catch (error) {
     console.error('Error loading home page:', error)
   }
+  handleRouteChange()
 }
 
-function initApp() {
+async function initApp() {
   if (isAuthenticated()) {
-    clearAndSetInitialContent() // Set initial content based on authenticated user
-    generateNavigation(userData.role)
-    loadHomePage() // Load the home page content for authenticated users
+    clearAndSetInitialContent() // Clear previous content
+    generateNavigation(userData.role) // Set up navigation based on the user's role
+    // No need to preemptively loadHomePage here if handleRouteChange handles initial content loading
   } else {
-    // Optionally, handle unauthenticated users, e.g., redirect to login
     console.log('User not authenticated')
-    generateLoginForm()
+    generateLoginForm() // Show login form or redirect
   }
+  handleRouteChange() // Ensure this is called to handle routing based on the current hash
 }
 
 function isAuthenticated() {
