@@ -17,6 +17,9 @@ function createFormButton(text) {
 
 // Function to generate the login form
 function generateLoginForm() {
+  const setTitle = document.getElementById('pageTitle')
+  setTitle.innerText = 'LOGIN'
+
   const form = document.createElement('form')
   form.id = 'loginForm'
   const header = document.createElement('p')
@@ -76,4 +79,64 @@ function handleLoginSubmit(event) {
       }
     })
     .catch((error) => console.error('Error during login:', error))
+}
+
+function checkJwtAndHandleAuth() {
+  const token = localStorage.getItem('jwtToken')
+  if (!token) {
+    generateLoginForm()
+  } else if (!isJwtValid(token)) {
+    console.log('Session expired or user not logged in. Prompting for login...')
+    removeJwt()
+    promptForLogin()
+  } else {
+    console.log('JWT is valid.')
+    checkStageJsImported()
+  }
+}
+
+function isJwtValid(token) {
+  const base64Url = token.split('.')[1]
+  const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
+  const payload = JSON.parse(window.atob(base64))
+  const exp = payload.exp
+  const now = Date.now().valueOf() / 1000
+
+  return typeof exp !== 'undefined' && exp > now
+}
+
+function promptForLogin() {
+  alert('Your session has expired. Please log in again.')
+  generateLoginForm()
+}
+
+function removeJwt() {
+  localStorage.removeItem('jwtToken')
+  localStorage.removeItem('user')
+}
+//removeJwt();
+
+function checkStageJsImported() {
+  if (window.stageJsImported) {
+    console.log('`stage.js` is imported and ready.')
+  } else {
+    console.log('`stage.js` has not been imported. Loading now...')
+    import('./stage.js')
+      .then(() => {
+        console.log('`stage.js` imported successfully.')
+        window.stageJsImported = true
+      })
+      .catch((error) => {
+        console.error('Error importing `stage.js`:', error)
+      })
+  }
+}
+
+function removeElementById(elementId) {
+  const element = document.getElementById(elementId)
+  if (element) {
+    element.remove()
+  } else {
+    console.log(`Element with ID '${elementId}' not found.`)
+  }
 }

@@ -1,4 +1,5 @@
-export function loadPage(setStage) {
+export function loadPage() {
+  const setStage = document.getElementById('contentBody')
   // Clear previous content
   setStage.innerHTML = ''
 

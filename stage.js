@@ -1,18 +1,16 @@
 window.stageJsImported = true
-console.log('stage')
 
 import { loadRoleBasedFeatures } from './reactive/load.js'
 import { globalState } from './reactive/state.js'
-import { fetchClientData } from './api/clientData.js'
-import { fetchMainData } from './api/mainData.js'
 import { generateNavigation } from './pages/components/nav.js'
 import './pages/components/routs.js'
+import { fetchClientData } from './api/clientData.js'
+import { fetchMainData } from './api/mainData.js'
 
 removeElementById('loginForm')
 
-const permissionLevel = userData.role
-
 const setStage = document.getElementById('contentBody')
+const setTitle = document.getElementById('pageTitle')
 
 function clearAndSetInitialContent() {
   // Clear previous content
@@ -40,7 +38,6 @@ async function loadHomePage() {
     // Dynamically import the home module
     const homeModule = await import('./pages/home.js')
     if (homeModule && homeModule.loadPage) {
-      // Assuming `home.js` exports a `loadPage` function
       homeModule.loadPage(setStage) // Pass `setStage` if you want to manipulate it directly from `home.js`
     }
   } catch (error) {
@@ -48,19 +45,20 @@ async function loadHomePage() {
   }
 }
 
-async function initApp() {
+function initApp() {
   if (isAuthenticated()) {
     clearAndSetInitialContent() // Set initial content based on authenticated user
-    await loadHomePage() // Load the home page content for authenticated users
+    generateNavigation(userData.role)
+    loadHomePage() // Load the home page content for authenticated users
   } else {
     // Optionally, handle unauthenticated users, e.g., redirect to login
     console.log('User not authenticated')
+    generateLoginForm()
   }
 }
 
 function isAuthenticated() {
   const token = localStorage.getItem('jwtToken')
-  // Assuming you have a utility function to validate the token
   return token && isJwtValid(token)
 }
 
@@ -80,10 +78,9 @@ function checkAuthAndInitialize() {
   } else {
     console.log('JWT is not valid. Please log in.')
     // Handle unauthenticated scenario
+    generateLoginForm()
   }
 }
 
-initStage()
-clearAndSetInitialContent()
-generateNavigation(permissionLevel)
 initApp()
+initStage()

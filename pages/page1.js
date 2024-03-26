@@ -1,4 +1,10 @@
 export function loadPage() {
-  const content = document.getElementById('contentBody')
-  content.innerHTML = '<h1>Home Page</h1><p>Welcome to page1.</p>'
+  const setStage = document.getElementById('contentBody')
+  // Clear previous content
+  setStage.innerHTML = ''
+
+  // Add home page specific content
+  const homeContent = document.createElement('div')
+  homeContent.innerText = 'This is the page1 content.'
+  setStage.appendChild(homeContent)
 }

@@ -1,25 +1,29 @@
+window.addEventListener('hashchange', handleRouteChange)
+
 function updatePageTitle(newTitle) {
   const pageTitleElement = document.getElementById('pageTitle')
   if (pageTitleElement) {
     pageTitleElement.innerText = newTitle
   }
+  console.log(`Setting page title to: ${pageTitle}`)
 }
 
 function handleRouteChange() {
-  const path = window.location.hash.replace('#', '')
+  const path = window.location.hash.replace('#', '') || 'home'
+  console.log(`Handling route for path: ${path}`)
   let pageTitle = ''
 
   switch (path) {
     case 'home':
-      loadModule('../home.js') // Assuming loadModule is your function to dynamically import page modules
+      loadModule('../../home') // Assuming loadModule is your function to dynamically import page modules
       pageTitle = 'Home'
       break
     case 'page1':
-      loadModule('./pages/page1.js')
+      loadModule('../../page1')
       pageTitle = 'Page 1'
       break
     case 'page2':
-      loadModule('./pages/page2.js')
+      loadModule('../../page2')
       pageTitle = 'Page 2'
       break
     default:
@@ -28,25 +32,23 @@ function handleRouteChange() {
       // Optionally, load a default module or show a "Page Not Found" message
       break
   }
-
+  console.log(`Current path: ${path}`)
   // Update the page title with the determined title for the current route
   updatePageTitle(pageTitle)
 }
 
 async function loadModule(modulePath) {
   try {
-    const module = await import(`./${modulePath}.js`)
-    if (module && module.default) {
-      module.default() // Execute the default export function of the module
+    const module = await import(`./pages/${modulePath}.js`)
+    if (module && module.loadPage) {
+      module.loadPage() // Assuming each module exports a loadPage function
     }
   } catch (error) {
     console.error(`Failed to load module: ${modulePath}`, error)
   }
 }
 
-// Listen for hash changes to handle routing
-window.addEventListener('hashchange', handleRouteChange)
-
-document.addEventListener('DOMContentLoaded', (event) => {
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('DOMContentLoaded event fired.')
   handleRouteChange() // Ensure the DOM is ready before the initial route handling
 })
