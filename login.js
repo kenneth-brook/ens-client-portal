@@ -120,10 +120,8 @@ function checkStageJsImported() {
   if (window.stageJsImported) {
     console.log('`stage.js` is imported and ready.')
   } else {
-    console.log('`stage.js` has not been imported. Loading now...')
     import('./stage.js?v2')
       .then(() => {
-        console.log('`stage.js` imported successfully.')
         window.stageJsImported = true
       })
       .catch((error) => {
@@ -136,7 +134,5 @@ function removeElementById(elementId) {
   const element = document.getElementById(elementId)
   if (element) {
     element.remove()
-  } else {
-    console.log(`Element with ID '${elementId}' not found.`)
   }
 }

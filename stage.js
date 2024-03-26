@@ -21,12 +21,7 @@ async function initStage() {
   try {
     const clientData = await fetchClientData()
     const mainData = await fetchMainData()
-
-    // Use setState to update the global state
     globalState.setState({ clientData, mainData })
-
-    // Example: log the updated state
-    console.log('Updated state:', globalState.getState())
   } catch (error) {
     console.error('Failed to initialize stage:', error)
   }
@@ -64,8 +59,6 @@ function isAuthenticated() {
 }
 
 function isJwtValid(token) {
-  // Simplified validation logic
-  // Implement actual JWT validation here
   checkAuthAndInitialize()
   return true
 }
@@ -73,12 +66,8 @@ function isJwtValid(token) {
 function checkAuthAndInitialize() {
   const token = localStorage.getItem('jwtToken')
   if (token && window.isJwtValid(token)) {
-    // JWT is valid, proceed with initialization
     console.log('JWT is valid. Initializing application...')
-    // Initialize your application here
   } else {
-    console.log('JWT is not valid. Please log in.')
-    // Handle unauthenticated scenario
     generateLoginForm()
   }
 }

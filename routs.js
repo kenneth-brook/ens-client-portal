@@ -5,12 +5,10 @@ function updatePageTitle(newTitle) {
   if (pageTitleElement) {
     pageTitleElement.innerText = newTitle
   }
-  console.log(`Setting page title to: ${pageTitle}`)
 }
 
 function handleRouteChange() {
   const path = window.location.hash.replace('#', '') || 'home'
-  console.log(`Handling route for path: ${path}`)
   let pageTitle = ''
 
   switch (path) {
@@ -32,8 +30,6 @@ function handleRouteChange() {
       // Optionally, load a default module or show a "Page Not Found" message
       break
   }
-  console.log(`Current path: ${path}`)
-  // Update the page title with the determined title for the current route
   updatePageTitle(pageTitle)
 }
 
