@@ -3,9 +3,9 @@ window.stageJsImported = true
 import { handleRouteChange } from './routs.js'
 import { loadRoleBasedFeatures } from './reactive/load.js'
 import { globalState } from './reactive/state.js'
-import { generateNavigation } from './nav.js'
 import { fetchClientData } from './api/clientData.js'
 import { fetchMainData } from './api/mainData.js'
+import { generateNavigation } from './nav.js'
 
 removeElementById('loginForm')
 

@@ -1,7 +1,7 @@
 // ./reactive/state.js
 class State {
   constructor(initialState) {
-    this.state = initialState
+    this.state = initialState || { mainData: [] }
     this.listeners = []
   }
 
