@@ -13,6 +13,7 @@ function createNavLink(href, text) {
   link.addEventListener('click', (e) => {
     e.preventDefault()
     toggleMenuBox()
+    linkClicked()
     window.location.hash = href
   })
   return link

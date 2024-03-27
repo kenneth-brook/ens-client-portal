@@ -25,3 +25,9 @@ function toggleMenuBox() {
     menuBox.style.maxHeight = menuBox.scrollHeight + 'px'
   }
 }
+
+function linkClicked() {
+  // Close the menu when a link is clicked
+  const menu = document.getElementById('hamburger-menu')
+  menu.classList.remove('change')
+}

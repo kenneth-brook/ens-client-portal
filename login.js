@@ -69,7 +69,7 @@ function handleLoginSubmit(event) {
         localStorage.setItem('jwtToken', data.token)
         const uDat = JSON.stringify(data.user)
         localStorage.setItem('user', uDat)
-        returnData = localStorage.getItem('user')
+        const returnData = localStorage.getItem('user')
         userData = JSON.parse(returnData)
         import('./stage.js')
       } else {
@@ -120,7 +120,7 @@ function checkStageJsImported() {
   if (window.stageJsImported) {
     console.log('`stage.js` is imported and ready.')
   } else {
-    import('./stage.js?v2')
+    import('./stage.js')
       .then(() => {
         window.stageJsImported = true
       })

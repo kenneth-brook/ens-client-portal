@@ -7,7 +7,7 @@ function updatePageTitle(newTitle) {
   }
 }
 
-function handleRouteChange() {
+export function handleRouteChange() {
   const path = window.location.hash.replace('#', '') || 'home'
   let pageTitle = ''
 
