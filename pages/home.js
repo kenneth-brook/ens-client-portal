@@ -31,6 +31,16 @@ export function loadPage() {
         text: 'Active Incidents Count',
       },
     },
+    plotOptions: {
+      line: {
+        dataLabels: {
+          enabled: true,
+        },
+        marker: {
+          enabled: true,
+        },
+      },
+    },
     series: [
       {
         name: 'Active Incidents',
@@ -43,16 +53,13 @@ export function loadPage() {
   setInterval(function () {
     const state = globalState.getState() // Fetch the current state
     const mainDataCount = state.mainData ? state.mainData.length : 0 // Calculate the current count
-    console.log(`data count: ${mainDataCount}`)
-    var x = new Date().getTime(), // current time
-      y = mainDataCount
+    const x = new Date().getTime() // current time
+    const y = mainDataCount // your dynamically obtained value
 
-    console.log(`Attempting to add point: [${x}, ${y}]`)
+    // Check if the series already has 15 points
+    const shouldShift = chart.series[0].data.length >= 15
 
-    // Validate series reference and add point
-    if (chart && chart.series && chart.series.length > 0) {
-      chart.series[0].addPoint([x, y], true, true)
-    }
-    chart.redraw()
+    // Add a new point, and only shift if there are already 15 points in the series
+    chart.series[0].addPoint([x, y], true, shouldShift)
   }, 60000) // Update every minute
 }
