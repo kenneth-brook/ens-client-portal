@@ -16,9 +16,9 @@ export function handleRouteChange() {
       loadModule('home') // Assuming loadModule is your function to dynamically import page modules
       pageTitle = 'Home'
       break
-    case 'page1':
-      loadModule('page1')
-      pageTitle = 'Page 1'
+    case 'reports':
+      loadModule('reports')
+      pageTitle = 'Reports'
       break
     case 'page2':
       loadModule('page2')
@@ -44,4 +44,4 @@ async function loadModule(modulePath) {
   }
 }
 
-handleRouteChange() // Ensure the DOM is ready before the initial route handling
+document.addEventListener('DOMContentLoaded', handleRouteChange) // Ensure the DOM is ready before the initial route handling

@@ -86,3 +86,10 @@ function checkAuthAndInitialize() {
 
 initApp()
 initStage()
+
+globalState.subscribe(() => {
+  const currentRoute = window.location.hash.replace('#', '')
+  if (currentRoute !== 'home') {
+    handleRouteChange() // Call only if the current route is not 'home'
+  }
+})

@@ -8,6 +8,7 @@ export async function fetchMainData() {
     if (!response.ok) {
       throw new Error('Failed to fetch main data')
     }
+    console.log('State update triggered')
     const data = await response.json()
     globalState.setState({ mainData: data })
     return data

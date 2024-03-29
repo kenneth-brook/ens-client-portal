@@ -25,7 +25,7 @@ export function generateNavigation(permissionLevel) {
   const menuBox = document.getElementById('menu-box')
   const links = [
     { href: 'home', text: 'Home' },
-    { href: 'page1', text: 'Page 1' },
+    { href: 'reports', text: 'Reports' },
     { href: 'page2', text: 'Page 2' },
     // Add more links as needed
   ]

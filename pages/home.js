@@ -18,7 +18,7 @@ export function loadPage() {
       type: 'line',
     },
     title: {
-      text: 'Live Active Incidents Count',
+      text: 'Live Active Incidents Count by Agency Type',
     },
     xAxis: {
       type: 'datetime',
@@ -44,8 +44,24 @@ export function loadPage() {
     },
     series: [
       {
-        name: 'Active Incidents',
-        data: [], // Initial empty data
+        name: 'Total',
+        color: 'black',
+        data: [], // Initial empty data for total count
+      },
+      {
+        name: 'Fire',
+        color: 'red',
+        data: [], // Initial empty data for Fire
+      },
+      {
+        name: 'Law',
+        color: 'blue',
+        data: [], // Initial empty data for Law
+      },
+      {
+        name: 'EMS',
+        color: 'green',
+        data: [], // Initial empty data for EMS
       },
     ],
   })
@@ -54,17 +70,28 @@ export function loadPage() {
   setInterval(function () {
     console.log('Interval callback executed')
     const state = globalState.getState() // Fetch the current state
-    const mainDataCount = state.mainData ? state.mainData.length : 0 // Calculate the current count
-    const x = new Date().getTime() // current time
-    const y = mainDataCount // your dynamically obtained value
+    const currentTime = new Date().getTime() // current time
+    const counts = { total: 0, fire: 0, law: 0, ems: 0 }
 
-    console.log(`Adding point: [${x}, ${y}]`)
+    // Calculate counts based on agency_type
+    if (state.mainData) {
+      state.mainData.forEach((item) => {
+        counts.total++
+        if (item.agency_type === 'Fire') counts.fire++
+        else if (item.agency_type === 'Law') counts.law++
+        else if (item.agency_type === 'EMS') counts.ems++
+      })
+    }
+
+    console.log(`Adding points for each category and total`)
+
+    // Decide whether to shift the chart
     const shouldShift = chart.series[0].data.length >= 15
-    console.log(
-      `Should shift: ${shouldShift}`,
-      chart.series[0].data.map((d) => d.y),
-    )
 
-    chart.series[0].addPoint([x, y], true, shouldShift)
+    // Add points for each series
+    chart.series[0].addPoint([currentTime, counts.total], true, shouldShift) // Total
+    chart.series[1].addPoint([currentTime, counts.fire], true, shouldShift) // Fire
+    chart.series[2].addPoint([currentTime, counts.law], true, shouldShift) // Law
+    chart.series[3].addPoint([currentTime, counts.ems], true, shouldShift) // EMS
   }, 60000)
 }
