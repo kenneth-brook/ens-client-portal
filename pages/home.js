@@ -38,6 +38,7 @@ export function loadPage() {
         },
         marker: {
           enabled: true,
+          radius: 5,
         },
       },
     },
@@ -51,15 +52,19 @@ export function loadPage() {
 
   // Update the chart every 60 seconds
   setInterval(function () {
+    console.log('Interval callback executed')
     const state = globalState.getState() // Fetch the current state
     const mainDataCount = state.mainData ? state.mainData.length : 0 // Calculate the current count
     const x = new Date().getTime() // current time
     const y = mainDataCount // your dynamically obtained value
 
-    // Check if the series already has 15 points
+    console.log(`Adding point: [${x}, ${y}]`)
     const shouldShift = chart.series[0].data.length >= 15
+    console.log(
+      `Should shift: ${shouldShift}`,
+      chart.series[0].data.map((d) => d.y),
+    )
 
-    // Add a new point, and only shift if there are already 15 points in the series
     chart.series[0].addPoint([x, y], true, shouldShift)
-  }, 60000) // Update every minute
+  }, 60000)
 }
