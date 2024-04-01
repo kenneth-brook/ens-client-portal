@@ -264,3 +264,7 @@ header {
 .dropLink {
     padding: 10px;
 }
+
+.highcharts-root {
+    font-size: 1.6rem !important;
+}

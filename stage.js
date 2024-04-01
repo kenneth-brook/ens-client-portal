@@ -93,3 +93,5 @@ globalState.subscribe(() => {
     handleRouteChange() // Call only if the current route is not 'home'
   }
 })
+
+console.log(localStorage.getItem('user'))
