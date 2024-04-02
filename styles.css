@@ -207,7 +207,7 @@ header {
 
 #contentBody {
     width: 85%;
-    height: 100vh;
+    /*height: 100vh;*/
     position: absolute;
     right: 0;
     display: flex;
