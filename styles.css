@@ -268,3 +268,35 @@ header {
 .highcharts-root {
     font-size: 1.6rem !important;
 }
+
+table {
+    width: 85%;
+    border-collapse: collapse;
+    border-radius: 15px;
+    overflow: hidden; /* Ensures the border-radius applies to the table */
+    margin-top: 50px;
+}
+thead {
+    background-color: darkgrey;
+}
+thead th {
+    color: white;
+    font-size: 2.2rem;
+    font-weight: bold;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
+tbody tr:nth-child(odd) {
+    background-color: lightgrey;
+}
+tbody tr:nth-child(even) {
+    background-color: #f9f9f9; /* Very light grey */
+}
+td {
+    font-size: 1.6rem;
+    padding-top: 7px;
+    padding-bottom: 7px;
+    text-align: left; /* Aligns text to the left in table cells */
+    padding-left: 15px;
+}
