@@ -211,6 +211,7 @@ header {
     position: absolute;
     right: 0;
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1;
@@ -337,3 +338,31 @@ td {
 #menuContent form div {
     width: 100%;
 }
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+    margin-top: 25px;
+  }
+  
+  .pagination a, .pagination span {
+    margin: 0 5px;
+    padding: 5px 10px;
+    text-decoration: none;
+    color: #fff;
+    font-size: 1.6rem;
+    border: 2px solid transparent; /* Adjust color as needed */
+  }
+  
+  .pagination a:hover, .pagination .current-page {
+    background-color: #1100ff; /* Adjust color as needed */
+    border-color: #666; /* Adjust color as needed */
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease; /* Smooth transition */
+  }
+  
+  .pagination-prev, .pagination-next {
+    font-weight: bold;
+  }

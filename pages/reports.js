@@ -5,6 +5,7 @@ const getKey = localStorage.getItem('user')
 const decriptClientKey = JSON.parse(getKey)
 const clientKey = decriptClientKey.key
 const homeContent = document.createElement('div')
+let lastSubmittedFormData = new URLSearchParams()
 
 // This function now strictly deals with loading and displaying content.
 export function loadPage() {
@@ -17,9 +18,11 @@ export function loadPage() {
   datCall()
 }
 
-async function datCall(params) {
+async function datCall(searchParams = new URLSearchParams(), page = 1) {
   try {
-    const url = `https://client-control.911-ens-services.com/fullPull/${clientKey}?${params}` //
+    // Add the 'page' parameter to the existing search parameters
+    searchParams.set('page', page)
+    const url = `https://client-control.911-ens-services.com/fullPull/${clientKey}?${searchParams}`
     const response = await fetch(url)
     const data = await response.json()
     incidentData = data.data
@@ -29,6 +32,7 @@ async function datCall(params) {
       homeContent.innerText = 'Page content loaded with applied filters.'
       initializeFilterInterface()
       tableSpawn()
+      createPagination(data) // Assuming 'createPagination' also sets up event listeners for page changes
     } else {
       homeContent.innerText =
         data.error || 'Error loading page content with filters.'
@@ -63,6 +67,20 @@ function initializeFilterInterface() {
   tag2.innerText = 'End Date'
   wrap2.appendChild(createInputField('endDate', 'date', 'End Date'))
 
+  const agencyTypeWrap = document.createElement('div')
+  form.appendChild(agencyTypeWrap)
+  const agencyTypeTag = document.createElement('h4')
+  agencyTypeTag.innerText = 'Agency Type'
+  agencyTypeWrap.appendChild(agencyTypeTag)
+
+  const agencyOptions = [
+    { label: 'Select Agency Type', value: '' }, // Optional: default "empty" selection
+    { label: 'Law', value: 'Law' },
+    { label: 'Fire', value: 'Fire' },
+    { label: 'EMS', value: 'EMS' },
+  ]
+  agencyTypeWrap.appendChild(createDropdown('agencyType', agencyOptions))
+
   // Add other fields as in your original code
 
   const submitButton = document.createElement('button')
@@ -73,6 +91,23 @@ function initializeFilterInterface() {
   menuContent.appendChild(form)
 
   form.addEventListener('submit', handleFilterSubmit)
+}
+
+function createDropdown(id, options) {
+  const select = document.createElement('select')
+  select.id = id
+  select.name = id
+
+  options.forEach((option) => {
+    const optionElement = document.createElement('option')
+    optionElement.value = option.value
+    optionElement.textContent = option.label
+    select.appendChild(optionElement)
+  })
+
+  console.log('Created dropdown:', select) // Debugging: log the created dropdown
+
+  return select
 }
 
 function createInputField(id, type, placeholder) {
@@ -89,18 +124,16 @@ function createInputField(id, type, placeholder) {
 
 async function handleFilterSubmit(event) {
   event.preventDefault()
-  console.log('submit function fired')
   const form = document.getElementById('dataFilterForm')
   const formData = new FormData(form)
-  console.log(formData)
 
-  const params = new URLSearchParams()
+  // Serialize form data and store it globally
+  lastSubmittedFormData = new URLSearchParams()
   for (const [key, value] of formData.entries()) {
-    console.log(key, value)
-    if (value) params.append(key, value)
+    lastSubmittedFormData.append(key, value)
   }
-  datCall(params)
-  //loadPage(params) // Call loadPage with the search parameters
+
+  datCall(lastSubmittedFormData)
 }
 
 // Ensure to call this function when the SPA is initialized or when the route changes.
@@ -151,4 +184,63 @@ function tableSpawn() {
     })
     tbody.appendChild(row)
   })
+}
+
+function createPagination(data) {
+  const container = document.getElementById('contentBody')
+
+  // Create pagination container
+  const pagination = document.createElement('div')
+  pagination.className = 'pagination'
+
+  // Create Previous Button
+  const prev = document.createElement('a')
+  prev.href = '#'
+  prev.innerHTML = '&#10094; Prev'
+  prev.className = 'pagination-prev'
+  prev.addEventListener('click', (e) => {
+    e.preventDefault()
+    // Call your function to go to the previous page
+    goToPage(data.page - 1)
+  })
+  pagination.appendChild(prev)
+
+  // Check if Previous button should be disabled
+  if (data.page === 1) {
+    prev.classList.add('disabled')
+  }
+
+  // Create page numbers (simplified for brevity, see notes below for improvements)
+  const span = document.createElement('span')
+  span.textContent = `Page ${data.page} of ${data.totalPages}`
+  pagination.appendChild(span)
+
+  // Create Next Button
+  const next = document.createElement('a')
+  next.href = '#'
+  next.innerHTML = 'Next &#10095;'
+  next.className = 'pagination-next'
+  next.addEventListener('click', (e) => {
+    e.preventDefault()
+    // Call your function to go to the next page
+    goToPage(parseInt(data.page, 10) + 1)
+  })
+  pagination.appendChild(next)
+
+  // Check if Next button should be disabled
+  if (data.page === data.totalPages) {
+    next.classList.add('disabled')
+  }
+
+  // Insert pagination at the beginning of the container
+  if (container.firstChild) {
+    container.insertBefore(pagination, container.firstChild)
+  } else {
+    container.appendChild(pagination)
+  }
+}
+
+function goToPage(pageNumber) {
+  console.log('Go to page:', pageNumber)
+  datCall(lastSubmittedFormData, pageNumber)
 }
