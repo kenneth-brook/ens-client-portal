@@ -1,25 +1,25 @@
 import { globalState } from '../reactive/state.js'
 
 let incidentData = []
+const getKey = localStorage.getItem('user')
+const decriptClientKey = JSON.parse(getKey)
+const clientKey = decriptClientKey.key
+const homeContent = document.createElement('div')
 
 // This function now strictly deals with loading and displaying content.
-export async function loadPage(searchParams = new URLSearchParams()) {
-  const getKey = localStorage.getItem('user')
-  const decriptClientKey = JSON.parse(getKey)
-  const clientKey = decriptClientKey.key
-
+export function loadPage() {
   const setStage = document.getElementById('contentBody')
   setStage.innerHTML = '' // Clear previous content
 
-  const homeContent = document.createElement('div')
   homeContent.innerText = 'Loading content...'
   setStage.appendChild(homeContent)
 
-  // Include the clientKey in the search parameters
-  //searchParams.set('clientKey', clientKey)
+  datCall()
+}
 
+async function datCall(params) {
   try {
-    const url = `https://client-control.911-ens-services.com/fullPull/${clientKey}?${searchParams}` //
+    const url = `https://client-control.911-ens-services.com/fullPull/${clientKey}?${params}` //
     const response = await fetch(url)
     const data = await response.json()
     incidentData = data.data
@@ -48,7 +48,21 @@ function initializeFilterInterface() {
 
   const form = document.createElement('form')
   form.id = 'dataFilterForm'
-  form.appendChild(createInputField('startDate', 'date', 'Start Date'))
+
+  const wrap1 = document.createElement('div')
+  form.appendChild(wrap1)
+  const tag1 = document.createElement('h4')
+  wrap1.appendChild(tag1)
+  tag1.innerText = 'Start Date'
+  wrap1.appendChild(createInputField('startDate', 'date', 'Start Date'))
+
+  const wrap2 = document.createElement('div')
+  form.appendChild(wrap2)
+  const tag2 = document.createElement('h4')
+  wrap2.appendChild(tag2)
+  tag2.innerText = 'End Date'
+  wrap2.appendChild(createInputField('endDate', 'date', 'End Date'))
+
   // Add other fields as in your original code
 
   const submitButton = document.createElement('button')
@@ -65,6 +79,7 @@ function createInputField(id, type, placeholder) {
   const input = document.createElement('input')
   input.type = type
   input.id = id
+  input.name = id
   input.placeholder = placeholder
 
   console.log('Created input field:', input) // Debugging: log the created input field
@@ -74,15 +89,18 @@ function createInputField(id, type, placeholder) {
 
 async function handleFilterSubmit(event) {
   event.preventDefault()
+  console.log('submit function fired')
   const form = document.getElementById('dataFilterForm')
   const formData = new FormData(form)
+  console.log(formData)
 
   const params = new URLSearchParams()
   for (const [key, value] of formData.entries()) {
+    console.log(key, value)
     if (value) params.append(key, value)
   }
-
-  loadPage(params) // Call loadPage with the search parameters
+  datCall(params)
+  //loadPage(params) // Call loadPage with the search parameters
 }
 
 // Ensure to call this function when the SPA is initialized or when the route changes.
