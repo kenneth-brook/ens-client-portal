@@ -18,13 +18,15 @@ export function loadPage() {
   datCall()
 }
 
+let data
+
 async function datCall(searchParams = new URLSearchParams(), page = 1) {
   try {
     // Add the 'page' parameter to the existing search parameters
     searchParams.set('page', page)
     const url = `https://client-control.911-ens-services.com/fullPull/${clientKey}?${searchParams}`
     const response = await fetch(url)
-    const data = await response.json()
+    data = await response.json()
     incidentData = data.data
 
     if (response.ok) {
@@ -80,6 +82,24 @@ function initializeFilterInterface() {
     { label: 'EMS', value: 'EMS' },
   ]
   agencyTypeWrap.appendChild(createDropdown('agencyType', agencyOptions))
+
+  const jurisdictionWrap = document.createElement('div')
+  form.appendChild(jurisdictionWrap)
+  const jurisdictionTag = document.createElement('h4')
+  jurisdictionTag.innerText = 'Jurisdiction'
+  jurisdictionWrap.appendChild(jurisdictionTag)
+
+  // Assuming globalState.jurisdictions is an array of jurisdiction names
+  const jurisdictionOptions = data.filters.jurisdictions
+    .filter((jurisdiction) => jurisdiction && jurisdiction.trim() !== '') // Filter out empty or undefined values
+    .map((jurisdiction) => ({ label: jurisdiction, value: jurisdiction }))
+
+  jurisdictionWrap.appendChild(
+    createDropdown('jurisdiction', [
+      { label: 'Select Jurisdiction', value: '' },
+      ...jurisdictionOptions,
+    ]),
+  )
 
   // Add other fields as in your original code
 
