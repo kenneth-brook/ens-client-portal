@@ -316,7 +316,10 @@ td {
 
 #menuContent form button {
     width: 60%;
-    padding: 10px 0;
+    padding: 15px 0;
+    background-color: #143D6A;
+    color: white;
+    border: 3px solid #6AACF3;
 }
 
 #menuContent form > * {

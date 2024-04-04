@@ -83,6 +83,22 @@ function initializeFilterInterface() {
 
   // Add other fields as in your original code
 
+  const idWrap = document.createElement('div')
+  form.appendChild(idWrap)
+  const idTag = document.createElement('h4')
+  idTag.innerText = 'Master Incident Id'
+  idWrap.appendChild(idTag)
+  idWrap.appendChild(createInputField('masterIncidentId', 'text', 'Enter ID'))
+
+  const locationWrap = document.createElement('div')
+  form.appendChild(locationWrap)
+  const locationTag = document.createElement('h4')
+  locationTag.innerText = 'Location'
+  locationWrap.appendChild(locationTag)
+  locationWrap.appendChild(
+    createInputField('location', 'text', 'Enter Location'),
+  )
+
   const submitButton = document.createElement('button')
   submitButton.type = 'submit'
   submitButton.textContent = 'Apply Filters'
@@ -176,6 +192,16 @@ function tableSpawn() {
 
   // Function to format date
   function formatDate(dateString) {
+    // Parse the input date string to a Date object
+    const date = new Date(dateString)
+
+    // Check if the hour is 24 and adjust the date and time accordingly
+    if (date.getHours() === 24) {
+      date.setHours(0) // Set the hour to 00
+      date.setDate(date.getDate() + 1) // Move the date forward by one day
+    }
+
+    // Define the options for formatting the date
     const options = {
       year: 'numeric',
       month: '2-digit',
@@ -184,9 +210,10 @@ function tableSpawn() {
       minute: '2-digit',
       second: '2-digit',
       hour12: false,
-      timeZoneName: 'short',
+      timeZone: 'UTC',
     }
-    const date = new Date(dateString)
+
+    // Format the adjusted date
     return new Intl.DateTimeFormat('default', options).format(date)
   }
 
