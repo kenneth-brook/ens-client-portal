@@ -174,12 +174,33 @@ function tableSpawn() {
   })
   thead.appendChild(headerRow)
 
+  // Function to format date
+  function formatDate(dateString) {
+    const options = {
+      year: 'numeric',
+      month: '2-digit',
+      day: '2-digit',
+      hour: '2-digit',
+      minute: '2-digit',
+      second: '2-digit',
+      hour12: false,
+      timeZoneName: 'short',
+    }
+    const date = new Date(dateString)
+    return new Intl.DateTimeFormat('default', options).format(date)
+  }
+
   // Filling data rows
   incidentData.forEach((item) => {
     const row = document.createElement('tr')
     specifiedFields.forEach((field) => {
       const td = document.createElement('td')
-      td.textContent = item[field]
+      // Use formatDate for the 'creation' field
+      if (field === 'creation') {
+        td.textContent = formatDate(item[field])
+      } else {
+        td.textContent = item[field]
+      }
       row.appendChild(td)
     })
     tbody.appendChild(row)
