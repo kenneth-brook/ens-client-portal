@@ -101,6 +101,65 @@ function initializeFilterInterface() {
     ]),
   )
 
+  const battalionWrap = document.createElement('div')
+  form.appendChild(battalionWrap)
+  const battalionTag = document.createElement('h4')
+  battalionTag.innerText = 'Battalion'
+  battalionWrap.appendChild(battalionTag)
+
+  // Assuming globalState.battalions is an array of battalion names
+  const battalionOptions = data.filters.battalions
+    .filter((battalion) => battalion && battalion.trim() !== '') // Filter out empty or undefined values
+    .map((battalion) => ({ label: battalion, value: battalion }))
+
+  battalionWrap.appendChild(
+    createDropdown('battalion', [
+      { label: 'Select battalion', value: '' },
+      ...battalionOptions,
+    ]),
+  )
+
+  const typesWrap = document.createElement('div')
+  form.appendChild(typesWrap)
+  const typesTag = document.createElement('h4')
+  typesTag.innerText = 'Types'
+  typesWrap.appendChild(typesTag)
+
+  // Assuming globalState.typess is an array of types names
+  const typesOptions = data.filters.types
+    .filter((types) => types && types.trim() !== '') // Filter out empty or undefined values
+    .map((types) => ({ label: types, value: types }))
+
+  typesWrap.appendChild(
+    createDropdown('type', [
+      { label: 'Select Type', value: '' },
+      ...typesOptions,
+    ]),
+  )
+
+  const typeDescriptionWrap = document.createElement('div')
+  form.appendChild(typeDescriptionWrap)
+  const typeDescriptionTag = document.createElement('h4')
+  typeDescriptionTag.innerText = 'Type Description'
+  typeDescriptionWrap.appendChild(typeDescriptionTag)
+
+  // Assuming globalState.typeDescriptions is an array of typeDescription names
+  const typeDescriptionOptions = data.filters.typeDescriptions
+    .filter(
+      (typeDescriptions) => typeDescriptions && typeDescriptions.trim() !== '',
+    ) // Filter out empty or undefined values
+    .map((typeDescriptions) => ({
+      label: typeDescriptions,
+      value: typeDescriptions,
+    }))
+
+  typeDescriptionWrap.appendChild(
+    createDropdown('typeDescription', [
+      { label: 'Select Type Description', value: '' },
+      ...typeDescriptionOptions,
+    ]),
+  )
+
   // Add other fields as in your original code
 
   const idWrap = document.createElement('div')
@@ -122,7 +181,20 @@ function initializeFilterInterface() {
   const submitButton = document.createElement('button')
   submitButton.type = 'submit'
   submitButton.textContent = 'Apply Filters'
+  submitButton.className = 'subButt'
   form.appendChild(submitButton)
+
+  const resetButton = document.createElement('button')
+  resetButton.type = 'button' // Important: make it 'button' to prevent form submission
+  resetButton.textContent = 'Reset Report'
+  resetButton.className = 'resButt'
+  resetButton.addEventListener('click', function () {
+    // Reload the page
+    window.location.reload()
+  })
+
+  // Add the Reset Report button to the form
+  form.appendChild(resetButton)
 
   menuContent.appendChild(form)
 
@@ -163,12 +235,17 @@ async function handleFilterSubmit(event) {
   const form = document.getElementById('dataFilterForm')
   const formData = new FormData(form)
 
-  // Serialize form data and store it globally
-  lastSubmittedFormData = new URLSearchParams()
   for (const [key, value] of formData.entries()) {
-    lastSubmittedFormData.append(key, value)
+    if (value.trim() !== '') {
+      // Update or add new value
+      lastSubmittedFormData.set(key, value)
+    } //else {
+    // Remove filter if the new value is empty
+    //lastSubmittedFormData.delete(key)
+    //}
   }
 
+  console.log('submmit', lastSubmittedFormData)
   datCall(lastSubmittedFormData)
 }
 

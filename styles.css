@@ -314,12 +314,20 @@ td {
     align-items: center;
 }
 
-#menuContent form button {
+#menuContent form .subButt {
     width: 60%;
     padding: 15px 0;
     background-color: #143D6A;
     color: white;
     border: 3px solid #6AACF3;
+}
+
+#menuContent form .resButt {
+    width: 60%;
+    padding: 15px 0;
+    background-color: #ce0f0f;
+    color: white;
+    border: 3px solid #535455;
 }
 
 #menuContent form > * {
