@@ -6,10 +6,10 @@ const decriptClientKey = JSON.parse(getKey)
 const clientKey = decriptClientKey.key
 const homeContent = document.createElement('div')
 let lastSubmittedFormData = new URLSearchParams()
+const setStage = document.getElementById('contentBody')
 
 // This function now strictly deals with loading and displaying content.
 export function loadPage() {
-  const setStage = document.getElementById('contentBody')
   setStage.innerHTML = '' // Clear previous content
 
   homeContent.innerText = 'Loading content...'
@@ -43,6 +43,16 @@ async function datCall(searchParams = new URLSearchParams(), page = 1) {
     console.error('Error fetching client data:', error)
     homeContent.innerText = 'Error loading page content.'
   }
+}
+
+function createPagination(data) {
+  const paginationContainerTop = document.createElement('div')
+  setStage.insertBefore(paginationContainerTop, setStage.firstChild) // Assuming `setStage` is your content container
+  renderPaginationControls(paginationContainerTop, data, 25)
+
+  const paginationContainerBottom = document.createElement('div')
+  setStage.appendChild(paginationContainerBottom) // Assuming `menuContent` is the container for your form
+  renderPaginationControls(paginationContainerBottom, data, 25)
 }
 
 // Separately initialize the filter interface when the document is ready.
@@ -331,61 +341,74 @@ function tableSpawn() {
   })
 }
 
-function createPagination(data) {
-  const container = document.getElementById('contentBody')
+function goToPage(pageNumber) {
+  console.log('Go to page:', pageNumber)
+  datCall(lastSubmittedFormData, pageNumber)
+}
+
+function renderPaginationControls(container, data, entriesPerPage) {
+  // Clear any existing pagination controls in the container
+  container.innerHTML = ''
+
+  // Calculate the start and end entry numbers for the current page
+  const startEntry = (data.page - 1) * entriesPerPage + 1
+  let endEntry = data.page * entriesPerPage
+  endEntry = endEntry > data.totalEntries ? data.totalEntries : endEntry // Adjust if the last page has fewer entries
 
   // Create pagination container
   const pagination = document.createElement('div')
   pagination.className = 'pagination'
 
-  // Create Previous Button
+  // Previous Button
   const prev = document.createElement('a')
   prev.href = '#'
   prev.innerHTML = '&#10094; Prev'
   prev.className = 'pagination-prev'
   prev.addEventListener('click', (e) => {
     e.preventDefault()
-    // Call your function to go to the previous page
     goToPage(data.page - 1)
   })
   pagination.appendChild(prev)
 
-  // Check if Previous button should be disabled
+  // Disable Previous button if on the first page
   if (data.page === 1) {
     prev.classList.add('disabled')
   }
 
-  // Create page numbers (simplified for brevity, see notes below for improvements)
+  // Page numbers
   const span = document.createElement('span')
   span.textContent = `Page ${data.page} of ${data.totalPages}`
   pagination.appendChild(span)
 
-  // Create Next Button
+  // Next Button
   const next = document.createElement('a')
   next.href = '#'
   next.innerHTML = 'Next &#10095;'
   next.className = 'pagination-next'
   next.addEventListener('click', (e) => {
     e.preventDefault()
-    // Call your function to go to the next page
     goToPage(parseInt(data.page, 10) + 1)
   })
   pagination.appendChild(next)
 
-  // Check if Next button should be disabled
+  // Disable Next button if on the last page
   if (data.page === data.totalPages) {
     next.classList.add('disabled')
   }
 
-  // Insert pagination at the beginning of the container
-  if (container.firstChild) {
-    container.insertBefore(pagination, container.firstChild)
-  } else {
-    container.appendChild(pagination)
-  }
-}
+  // Append the pagination container to the specified parent container
+  container.appendChild(pagination)
 
-function goToPage(pageNumber) {
-  console.log('Go to page:', pageNumber)
-  datCall(lastSubmittedFormData, pageNumber)
+  // Total Entries and Showing Entries Info
+  const countWrap = document.createElement('div')
+  countWrap.className = 'countWrap'
+  const entriesInfo = document.createElement('p')
+  entriesInfo.className = 'entries-info'
+  if (data.total <= 24) {
+    entriesInfo.textContent = `Showing ${startEntry}-${data.total} of ${data.total} entries`
+  } else {
+    entriesInfo.textContent = `Showing ${startEntry}-${endEntry} of ${data.total} entries`
+  }
+  container.appendChild(countWrap)
+  countWrap.appendChild(entriesInfo)
 }

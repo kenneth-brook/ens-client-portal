@@ -358,7 +358,7 @@ td {
     margin-top: 25px;
   }
   
-  .pagination a, .pagination span {
+  .pagination a, .pagination span, .entries-info {
     margin: 0 5px;
     padding: 5px 10px;
     text-decoration: none;
@@ -376,4 +376,9 @@ td {
   
   .pagination-prev, .pagination-next {
     font-weight: bold;
+  }
+
+  .countWrap {
+    width: 100%;
+    text-align: center;
   }
